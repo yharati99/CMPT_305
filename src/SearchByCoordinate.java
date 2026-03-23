@@ -36,12 +36,13 @@ public class SearchByCoordinate {
                     double distance = calculateDistance(schoolLat, schoolLon, propLat, propLon);
 
                     if (distance <= radiusKm) {
-                        PropertyAssessment propertiesAssessed = new PropertyAssessment(row);
-                        results.add(propertiesAssessed);
+                        PropertyAssessment property = new PropertyAssessment(row);
+                        if (property.isResidential()) {
+                            results.add(property);
+                        }
+
                     }
-                } catch (Exception e) {
-                    // Skip rows with bad coordinates
-                    continue;
+                } catch (Exception _) {
                 }
             }
 

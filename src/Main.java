@@ -1,16 +1,14 @@
 import java.util.Scanner;
-import java.io.IOException;
-import java.io.File;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    static void main() {
         Scanner input = new Scanner(System.in);
 
         System.out.print("Enter the school to search (UofA, MacEwan, NAIT, NorQuest): ");
         String schoolInput = input.nextLine().trim();
 
-        School selectedSchool = null;
+        School selectedSchool;
 
         // Using a switch to match the input to the Enum
         switch (schoolInput.toUpperCase()) {
@@ -28,13 +26,12 @@ public class Main {
                 break;
             default:
                 System.out.println("Error: School not recognized.");
-                return; // Exit if the school is wrong
+                return;
         }
 
         System.out.print("Enter search radius in km (e.g., 3.0): ");
         // It's safer to use double here
         double radius = input.nextDouble();
-
         input.nextLine();
 
         // Now call your logic class using the data from the Enum
@@ -44,7 +41,7 @@ public class Main {
 
         System.out.println("\nSearch complete. Found " + results.size() + " properties.");
 
-        if (results.size() > 0) {
+        if (!results.isEmpty()) {
             System.out.print("Would you like to print all results to the terminal? (yes/no): ");
             String answer = input.nextLine().trim().toLowerCase();
 

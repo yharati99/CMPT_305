@@ -1,20 +1,18 @@
 
 import java.util.Objects;
 public class PropertyAssessment implements Comparable<PropertyAssessment> {
-    private int accountNumber;
-    private long assessedValue;
-    private String neighbourhood;
-    private String assessmentClass;
-    private String ward;
+    private final int accountNumber;
+    private final long assessedValue;
+    private final String neighbourhood;
+    private final String assessmentClass;
 
-    private String col13;
-    private String col14;
-    private String col15;
+    private final String col13;
+    private final String col14;
+    private final String col15;
 
     public PropertyAssessment(String[] csvRow) {
         this. accountNumber = Integer.parseInt(csvRow[0]);
         this.neighbourhood = csvRow[5];
-        this.ward = csvRow[6];
         this.assessedValue = parseLongSafe(csvRow[7]);
         this.assessmentClass = csvRow[10].toUpperCase();
 
@@ -45,10 +43,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return neighbourhood;
     }
 
-    public String getWard() {
-        return this.ward;
-    }
-
     public boolean matchesClass(String searchClass) {
         searchClass = searchClass.toUpperCase();
 
@@ -62,7 +56,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return this.assessmentClass.equals(searchClass);
     }
 
-    private boolean isResidential() {
+    public boolean isResidential() {
         if (assessmentClass.equals("RESIDENTIAL") || assessmentClass.equals("OTHER RESIDENTIAL")) {
             return true;
         }
@@ -108,16 +102,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
 
         return String.format("Account: %-20s | Neighbourhood: %-20s | Value: $%d",
                 accountNumber, neighbourhood, assessedValue);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PropertyAssessment that = (PropertyAssessment) o;
-        return assessedValue == that.assessedValue &&
-                Objects.equals(neighbourhood, that.neighbourhood) &&
-                Objects.equals(assessmentClass, that.assessmentClass);
     }
 
     @Override
