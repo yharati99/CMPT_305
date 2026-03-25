@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Line?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com" xmlns:fx="http://javafx.com" fx:controller="org.example.fx.PropertyController">
+    <children>
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10;" text="Student Property Finder" />
+        <Label style="-fx-padding: 0 0 10 10;" text="Edmonton Universities" />
+
+        <GridPane hgap="10.0" style="-fx-background-color: #E0E0E0;" vgap="5.0">
+            <padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+            </columnConstraints>
+            <children>
+                <Label text="University" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="uniField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+                <Label text="Max Price ($/month)" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Spinner fx:id="priceSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="10000000" initialValue="500000" amountToStepBy="10000"/>
+                    </valueFactory>
+                </Spinner>
+
+                <Label text="Distance (meters)" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Spinner fx:id="distSpinner" editable="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="20000" initialValue="2000" amountToStepBy="100"/>
+                    </valueFactory>
+                </Spinner>
+
+                <Button text="🔍 Search" onAction="#handleSearch" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            </children>
+
+        </GridPane>
+
+        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
+            <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
+            <children>
+                <!-- Map View -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Map View" />
+                        <Pane fx:id="mapPlaceholder" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #CCCCCC; -fx-border-color: black;">
+                            <children>
+                                <Line endX="500.0" endY="400.0" />
+                                <Line endX="500.0" startY="400.0" />
+                            </children>
+                        </Pane>
+                    </children>
+                </VBox>
+
+                <!-- List View -->
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox>
+                            <children>
+                                <Label text="List View" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Hyperlink text="= Sort" />
+                            </children>
+                        </HBox>
+                        <ListView fx:id="propertyList" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>
