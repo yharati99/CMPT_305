@@ -1,3 +1,5 @@
+package org.example.fx;
+
 public enum School {
     UofA(53.5232, -113.5263),
     MacEwan(53.5467, -113.5063),
