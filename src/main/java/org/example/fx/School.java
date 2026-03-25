@@ -1,19 +1,27 @@
 package org.example.fx;
 
 public enum School {
-    UofA(53.5232, -113.5263),
-    MacEwan(53.5467, -113.5063),
-    NAIT(53.5681, -113.5016),
-    NorQuest(53.5416, -113.4996);
+    UofA("University of Alberta", 53.5232, -113.5263),
+    MacEwan("MacEwan University", 53.5467, -113.5063),
+    NAIT("NAIT", 53.5681, -113.5016),
+    NorQuest("NorQuest College", 53.5416, -113.4996);
 
+    private final String displayName;
     private final double lat;
     private final double lon;
 
-    School(double lat, double lon) {
+    School(String displayName, double lat, double lon) {
+        this.displayName = displayName;
         this.lat = lat;
         this.lon = lon;
     }
 
     public double getLat() { return lat; }
     public double getLon() { return lon; }
+
+    // The ComboBox automatically calls toString() to figure out what text to display on the screen!
+    @Override
+    public String toString() {
+        return displayName;
+    }
 }
