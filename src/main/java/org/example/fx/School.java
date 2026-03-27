@@ -19,7 +19,7 @@ public enum School {
     public double getLat() { return lat; }
     public double getLon() { return lon; }
 
-    // The ComboBox automatically calls toString() to figure out what text to display on the screen!
+    // The ComboBox automatically calls toString() to figure out what text to display on the screen
     @Override
     public String toString() {
         return displayName;

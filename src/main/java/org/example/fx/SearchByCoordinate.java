@@ -24,14 +24,17 @@ public class SearchByCoordinate {
         List<PropertyAssessment> results = new ArrayList<>();
         String filePath = "Property_Assessment_Data_2025.csv";
 
+        StringBuilder line = null;
+
         try (Scanner fileScanner = new Scanner(new File(filePath))) {
             if (fileScanner.hasNextLine()) fileScanner.nextLine();
 
             while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
-                String[] row = CsvParser.parseCSVLine(line);
+                line = new StringBuilder(fileScanner.nextLine());
 
                 try {
+                    String[] row = CsvParser.parseCSVLine(line.toString());
+
                     double propLat = Double.parseDouble(row[16]);
                     double propLon = Double.parseDouble(row[17]);
 
@@ -44,12 +47,14 @@ public class SearchByCoordinate {
                         }
 
                     }
-                } catch (Exception _) {
+                } catch (Exception e) {
+                    System.out.println("Skipped row due to: " + e.toString());
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Error reading CSV file: " + e.getMessage());
+            System.out.println("Skipped row due to: " + e.toString());
+            System.out.println("  Failing line: [" + line.toString().substring(0, Math.min(150, line.length())) + "]");
         }
         return results;
     }

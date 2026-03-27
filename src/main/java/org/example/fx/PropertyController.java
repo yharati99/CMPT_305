@@ -40,13 +40,12 @@ public class PropertyController {
                 engine.load(url.toExternalForm());
             }
         }
-    } // <-- This was the brace that went missing!
+    }
 
     @FXML
     private void handleSearch() {
         School selectedSchool = uniComboBox.getValue();
 
-        // Safety check: Did they click search without picking a school?
         if (selectedSchool == null) {
             showError("Please select a university from the dropdown.");
             return;
