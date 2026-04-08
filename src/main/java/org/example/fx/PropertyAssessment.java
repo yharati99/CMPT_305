@@ -11,11 +11,16 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final String col14;
     private final String col15;
 
+    private final double lat;
+    private final double lon;
+
     public PropertyAssessment(String[] csvRow) {
         this. accountNumber = Integer.parseInt(csvRow[0]);
         this.neighbourhood = csvRow[5];
         this.assessedValue = parseLongSafe(csvRow[7]);
         this.assessmentClass = csvRow[10].toUpperCase();
+        this.lat = csvRow.length > 16 ? parseDoubleSafe(csvRow[16]) : 0;
+        this.lon = csvRow.length > 17 ? parseDoubleSafe(csvRow[17]) : 0;
 
         if (csvRow.length >13) {
             this.col13 = csvRow[13];
@@ -91,6 +96,14 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public double getLat() { return lat; }
+    public double getLon() { return lon; }
+
+    private double parseDoubleSafe(String value) {
+        try { return Double.parseDouble(value); }
+        catch (Exception e) { return 0; }
     }
 
     @Override
