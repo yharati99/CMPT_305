@@ -29,7 +29,7 @@
                 <Label text="Max Price ($/month)" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <Spinner fx:id="priceSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="1000" max="10000000" min="0" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="10000" initialValue="500000" max="10000000" min="0" />
                     </valueFactory>
                 </Spinner>
 
@@ -67,8 +67,7 @@
                             <children>
                                 <Label text="List View" />
                                 <Region HBox.hgrow="ALWAYS" />
-                                <Hyperlink fx:id="distSortLink" onAction="#handleDistSort" text="= Dist Sort" />
-                                <Hyperlink fx:id="sortLink" onAction="#handleSort" text="= $ Sort" />
+                                <Hyperlink text="= Sort" />
                             </children>
                         </HBox>
                         <ListView fx:id="propertyList" prefWidth="250.0" VBox.vgrow="ALWAYS" />
