@@ -72,6 +72,23 @@ public class PropertyController {
 
             propertyList.setItems(FXCollections.observableArrayList(filteredResults));
 
+            // Zoom to selected school
+            webView.getEngine().executeScript(
+                    "zoomToLocation(" + selectedSchool.getLat() + ", " + selectedSchool.getLon() + ");"
+            );
+
+            WebEngine engine = webView.getEngine();
+
+            // Clear old markers first
+            engine.executeScript("clearMarkers();");
+
+            // Add a marker for each result
+            for (PropertyAssessment p : filteredResults) {
+                engine.executeScript(
+                        "addMarker(" + p.getLat() + ", " + p.getLon() + ", '" + p.getNeighbourhood() + "');"
+                );
+            }
+
         } catch (Exception e) {
             showError("An error occurred during search: " + e.getMessage());
         }
