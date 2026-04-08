@@ -6,6 +6,9 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final long assessedValue;
     private final String neighbourhood;
     private final String assessmentClass;
+    private final double lat;
+    private final double lon;
+    private double adjustedValue;
 
     private final String col13;
     private final String col14;
@@ -41,6 +44,34 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
+    public void setAdjustedValue(School school) {
+        double baseRent = this.assessedValue * 0.01;
+
+        // Calculate distance in km
+        double distance = calculateDistanceTo(school);
+
+        // Apply addend ONLY if within 2.0 km
+        if (distance <= 2.0) {
+            this.adjustedValue = baseRent + school.getAddedValue();
+        } else {
+            this.adjustedValue = baseRent;
+        }
+    }
+
+    private double calculateDistanceTo(School s) {
+        double R = 6371; // Earth radius in km
+        double dLat = Math.toRadians(s.getLat() - this.lat);
+        double dLon = Math.toRadians(s.getLon() - this.lon);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(this.lat)) * Math.cos(Math.toRadians(s.getLat())) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    public double getAdjustedValue() {
+        return adjustedValue;
+    }
+
     public long getAssessedValue() {
         return assessedValue;
     }
@@ -48,6 +79,9 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     public String getNeighbourhood() {
         return neighbourhood;
     }
+
+    public double getLat() { return lat; }
+    public double getLon() { return lon; }
 
     public boolean matchesClass(String searchClass) {
         searchClass = searchClass.toUpperCase();
@@ -87,6 +121,10 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
+    private double parseDoubleSafe(String value) {
+        try { return Double.parseDouble(value); } catch (Exception e) { return 0.0; }
+    }
+
     private boolean isNum(String value) {
         if (value == null || value.trim().isEmpty()) {
             return false;
@@ -108,14 +146,15 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
 
     @Override
     public int compareTo(PropertyAssessment other) {
-        return Long.compare(this.assessedValue, other.assessedValue);
+        //return Long.compare(this.assessedValue, other.assessedValue);
+        return Double.compare(this.adjustedValue, other.adjustedValue);
     }
 
     @Override
     public String toString() {
 
-        return String.format("Account: %-20s | Neighbourhood: %-20s | Value: $%d",
-                accountNumber, neighbourhood, assessedValue);
+        return String.format("Account: %-20s | Neighbourhood: %-20s | Value: $%d       |       Rent: $%.2f",
+                accountNumber, neighbourhood, assessedValue, adjustedValue);
     }
 
     @Override
