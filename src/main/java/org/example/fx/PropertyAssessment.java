@@ -56,6 +56,13 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return lon;
     }
 
+    public double getLat() {
+        return lat;
+    }
+    public double getLon() {
+        return lon;
+    }
+
     public double getAdjustedValue() {
         return adjustedValue;
     }
@@ -80,6 +87,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     public String getNeighbourhood() {
         return neighbourhood;
     }
+
 
     public boolean matchesClass(String searchClass) {
         searchClass = searchClass.toUpperCase();
