@@ -31,7 +31,17 @@ public class PropertyController {
             uniComboBox.setItems(FXCollections.observableArrayList(School.values()));
         }
 
-        // 2. Load the Map
+        if (propertyList != null) {
+            propertyList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null && webView != null) {
+                    // Send a command to JavaScript to highlight this specific property
+                    webView.getEngine().executeScript(
+                            "highlightMarker(" + newValue.getLat() + ", " + newValue.getLon() + ");"
+                    );
+                }
+            });
+        }
+
         if (webView != null) {
             WebEngine engine = webView.getEngine();
             engine.setJavaScriptEnabled(true);
@@ -43,6 +53,14 @@ public class PropertyController {
             } else {
                 engine.load(url.toExternalForm());
             }
+        }
+
+        if (propertyList != null) {
+            propertyList.setCellFactory(listView -> new PropertyCell());
+
+            // This is how you make the cells visually appealing right away,
+            // otherwise JavaFX waits for the list to be populated to style it.
+            propertyList.setStyle("-fx-background-color: transparent; -fx-control-inner-background: #f8f9fa; -fx-border-color: #f1f3f4;");
         }
     }
 
