@@ -14,9 +14,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final String col14;
     private final String col15;
 
-    private final double lat;
-    private final double lon;
-
     public PropertyAssessment(String[] csvRow) {
         this. accountNumber = Integer.parseInt(csvRow[0]);
         this.neighbourhood = csvRow[5];
@@ -68,6 +65,13 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
+    public double getLat() {
+        return lat;
+    }
+    public double getLon() {
+        return lon;
+    }
+
     public double getAdjustedValue() {
         return adjustedValue;
     }
@@ -80,8 +84,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return neighbourhood;
     }
 
-    public double getLat() { return lat; }
-    public double getLon() { return lon; }
 
     public boolean matchesClass(String searchClass) {
         searchClass = searchClass.toUpperCase();
@@ -134,14 +136,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    public double getLat() { return lat; }
-    public double getLon() { return lon; }
-
-    private double parseDoubleSafe(String value) {
-        try { return Double.parseDouble(value); }
-        catch (Exception e) { return 0; }
     }
 
     @Override
