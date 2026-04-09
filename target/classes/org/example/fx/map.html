@@ -31,6 +31,9 @@
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
+    // NEW 1: Create a dictionary to remember all our markers
+    var allMarkers = {};
+
     // Set Map Zoom
     function zoomToLocation(lat, lon) {
         map.setView([lat, lon], 14);
@@ -42,12 +45,32 @@
                 map.removeLayer(layer);
             }
         });
+        // NEW 2: Clear our dictionary when markers are cleared
+        allMarkers = {};
     }
 
     function addMarker(lat, lon, label) {
-        L.marker([lat, lon])
+        var marker = L.marker([lat, lon])
             .addTo(map)
             .bindPopup(label);
+
+        // NEW 3: Save the marker using its coordinates as a unique key
+        var key = lat + "," + lon;
+        allMarkers[key] = marker;
+    }
+
+    // NEW 4: Add the highlight function that Java will call
+    function highlightMarker(lat, lon) {
+        var key = lat + "," + lon;
+        var markerToHighlight = allMarkers[key];
+
+        if (markerToHighlight) {
+            // Center the map on the marker (zoom level 15 is nice and close)
+            map.setView([lat, lon], 15);
+
+            // Pop open the tooltip!
+            markerToHighlight.openPopup();
+        }
     }
 
     // Force resize recalculation

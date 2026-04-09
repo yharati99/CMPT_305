@@ -1,68 +1,59 @@
 package org.example.fx;
 
 import java.util.Objects;
+
 public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final int accountNumber;
+    private final String address;
     private final long assessedValue;
     private final String neighbourhood;
     private final String assessmentClass;
-    private final double lat;
-    private final double lon;
-    private double adjustedValue;
 
     private final String col13;
     private final String col14;
     private final String col15;
 
+    private final double lat;
+    private final double lon;
+    private double adjustedValue;
+
     public PropertyAssessment(String[] csvRow) {
-        this. accountNumber = Integer.parseInt(csvRow[0]);
+        this.accountNumber = Integer.parseInt(csvRow[0]);
+        this.address = (csvRow[1] + " " + csvRow[2] + " " + csvRow[3]).trim().replaceAll(" +", " ");
         this.neighbourhood = csvRow[5];
         this.assessedValue = parseLongSafe(csvRow[7]);
-        this.assessmentClass = csvRow[10].toUpperCase();
-        this.lat = csvRow.length > 16 ? parseDoubleSafe(csvRow[16]) : 0;
-        this.lon = csvRow.length > 17 ? parseDoubleSafe(csvRow[17]) : 0;
 
-        if (csvRow.length >13) {
+        this.lat = parseDoubleSafe(csvRow.length > 16 ? csvRow[16] : "0");
+        this.lon = parseDoubleSafe(csvRow.length > 17 ? csvRow[17] : "0");
+
+        this.assessmentClass = csvRow[10].toUpperCase();
+
+        if (csvRow.length > 13) {
             this.col13 = csvRow[13];
         } else {
             this.col13 = "";
         }
 
-        if (csvRow.length >14) {
+        if (csvRow.length > 14) {
             this.col14 = csvRow[14];
         }  else {
             this.col14 = "";
         }
 
-        if (csvRow.length >15) {
+        if (csvRow.length > 15) {
             this.col15 = csvRow[15];
         }  else {
             this.col15 = "";
         }
     }
 
-    public void setAdjustedValue(School school) {
-        double baseRent = this.assessedValue * 0.01;
-
-        // Calculate distance in km
-        double distance = calculateDistanceTo(school);
-
-        // Apply addend ONLY if within 2.0 km
-        if (distance <= 2.0) {
-            this.adjustedValue = baseRent + school.getAddedValue();
-        } else {
-            this.adjustedValue = baseRent;
-        }
+    // NEW: Getters for the Controller to use
+    public double getLat() {
+        return lat;
     }
 
-    private double calculateDistanceTo(School s) {
-        double R = 6371; // Earth radius in km
-        double dLat = Math.toRadians(s.getLat() - this.lat);
-        double dLon = Math.toRadians(s.getLon() - this.lon);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(this.lat)) * Math.cos(Math.toRadians(s.getLat())) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    public double getLon() {
+        return lon;
     }
 
     public double getLat() {
@@ -76,8 +67,21 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return adjustedValue;
     }
 
+
+    public void setAdjustedValue(School school) {
+        this.adjustedValue = this.assessedValue * 0.005;
+    }
+
     public long getAssessedValue() {
         return assessedValue;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getAssessmentClass() {
+        return assessmentClass;
     }
 
     public String getNeighbourhood() {
@@ -123,8 +127,13 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
+    // NEW: Helper method to safely parse the latitude and longitude
     private double parseDoubleSafe(String value) {
-        try { return Double.parseDouble(value); } catch (Exception e) { return 0.0; }
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException | NullPointerException e) {
+            return 0.0;
+        }
     }
 
     private boolean isNum(String value) {
@@ -140,15 +149,13 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
 
     @Override
     public int compareTo(PropertyAssessment other) {
-        //return Long.compare(this.assessedValue, other.assessedValue);
-        return Double.compare(this.adjustedValue, other.adjustedValue);
+        return Long.compare(this.assessedValue, other.assessedValue);
     }
 
     @Override
     public String toString() {
-
-        return String.format("Account: %-20s | Neighbourhood: %-20s | Value: $%d       |       Rent: $%.2f",
-                accountNumber, neighbourhood, assessedValue, adjustedValue);
+        return String.format("Account: %-10s | Address: %-25s | Neighbourhood: %-20s | Rent: $%.0f/mo",
+                accountNumber, address, neighbourhood, adjustedValue);
     }
 
     @Override
