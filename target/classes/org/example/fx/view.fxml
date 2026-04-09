@@ -8,47 +8,46 @@
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fx.PropertyController">
     <children>
-        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 10;" text="Student Property Finder">
-         <font>
-            <Font name="SansSerif Bold" size="13.0" />
-         </font></Label>
-        <Label style="-fx-padding: 0 0 10 10;" text="Edmonton Universities" textFill="#5f6368" />
 
-        <GridPane hgap="10.0" style="-fx-background-color: #E0E0E0;" vgap="5.0">
-            <padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" />
-                <ColumnConstraints hgrow="SOMETIMES" />
-                <ColumnConstraints hgrow="SOMETIMES" />
-                <ColumnConstraints hgrow="SOMETIMES" />
-            </columnConstraints>
-            <children>
-                <Label text="University" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <ComboBox fx:id="uniComboBox" promptText="Select School" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <!-- Header -->
+        <VBox style="-fx-background-color: #1e3a5f; -fx-padding: 16 20 16 20;">
+            <Label text="🏠 Student Property Finder"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Label text="Find rental properties near Edmonton universities — filter by distance and price."
+                   style="-fx-font-size: 12px; -fx-text-fill: #a8c4e0; -fx-padding: 4 0 0 0;" />
+        </VBox>
 
-                <Label text="Max Price ($/month)" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Spinner fx:id="priceSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <!-- Search Bar -->
+        <HBox spacing="12.0" alignment="CENTER_LEFT"
+              style="-fx-background-color: #f4f6f9; -fx-padding: 12 16 12 16; -fx-border-color: #d0d7e3; -fx-border-width: 0 0 1 0;">
+            <VBox spacing="3">
+                <Label text="University" style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                <ComboBox fx:id="uniComboBox" promptText="Select School" prefWidth="160" />
+            </VBox>
+            <VBox spacing="3">
+                <Label text="Max Price ($/month)" style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                <Spinner fx:id="priceSpinner" editable="true" prefWidth="130">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="1000" max="10000000" min="0" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="500000" max="10000000" min="0" />
                     </valueFactory>
                 </Spinner>
-
-                <Label text="Distance (meters)" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                <Spinner fx:id="distSpinner" editable="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            </VBox>
+            <VBox spacing="3">
+                <Label text="Distance (meters)" style="-fx-font-size: 11px; -fx-text-fill: #666;" />
+                <Spinner fx:id="distSpinner" editable="true" prefWidth="130">
                     <valueFactory>
                         <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="2000" max="20000" min="0" />
                     </valueFactory>
                 </Spinner>
+            </VBox>
+            <VBox spacing="3">
+                <Label text=" " style="-fx-font-size: 11px;" />
+                <Button onAction="#handleSearch" text="🔍  Search"
+                        style="-fx-background-color: #1e3a5f; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 18 6 18; -fx-background-radius: 4;" />
+            </VBox>
+        </HBox>
 
-                <Button onAction="#handleSearch" text="🔍 Search" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            </children>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
-
-        </GridPane>
-
+        <!-- Map + List -->
         <HBox spacing="10.0" VBox.vgrow="ALWAYS">
             <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
             <children>
@@ -76,5 +75,6 @@
                 </VBox>
             </children>
         </HBox>
+
     </children>
 </VBox>
