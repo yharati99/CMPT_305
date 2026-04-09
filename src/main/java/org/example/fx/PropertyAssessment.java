@@ -47,15 +47,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
-    // NEW: Getters for the Controller to use
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
     public double getLat() {
         return lat;
     }
@@ -127,7 +118,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
-    // NEW: Helper method to safely parse the latitude and longitude
     private double parseDoubleSafe(String value) {
         try {
             return Double.parseDouble(value);

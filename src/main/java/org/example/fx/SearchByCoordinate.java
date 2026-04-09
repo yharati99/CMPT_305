@@ -7,7 +7,6 @@ import java.util.List;
 
 public class SearchByCoordinate {
 
-    // The Proximity Logic (Haversine Formula)
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Radius of the earth in km
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -19,7 +18,6 @@ public class SearchByCoordinate {
         return R * c;
     }
 
-    // The Search Method
     public List<PropertyAssessment> findProperties(double schoolLat, double schoolLon, double radiusKm) {
         List<PropertyAssessment> results = new ArrayList<>();
         String filePath = "Available_Properties.csv";
@@ -48,13 +46,14 @@ public class SearchByCoordinate {
 
                     }
                 } catch (Exception e) {
-                    System.out.println("Skipped row due to: " + e.toString());
+                    System.out.println("Skipped row due to: " + e);
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Skipped row due to: " + e.toString());
-            System.out.println("  Failing line: [" + line.toString().substring(0, Math.min(150, line.length())) + "]");
+            System.out.println("Skipped row due to: " + e);
+            assert line != null;
+            System.out.println("  Failing line: [" + line.substring(0, Math.min(150, line.length())) + "]");
         }
         return results;
     }

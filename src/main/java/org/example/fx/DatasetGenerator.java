@@ -7,13 +7,12 @@ import java.util.Scanner;
 
 public class DatasetGenerator {
 
-    // Configuration
-    private static final double MAX_RADIUS_KM = 10.0; // Change this to set absolute max search area
+    private static final double MAX_RADIUS_KM = 10.0;
     private static final double CHANCE_TO_BE_LISTED = 0.05;
     private static final String INPUT_FILE = "Property_Assessment_Data_2025.csv";
     private static final String OUTPUT_FILE = "Available_Properties.csv";
 
-    public static void main(String[] args) {
+    static void main() {
         Random random = new Random();
         int totalProcessed = 0;
         int totalListed = 0;
@@ -21,15 +20,13 @@ public class DatasetGenerator {
         System.out.println("Generating new dataset");
 
         try (Scanner scanner = new Scanner(new File(INPUT_FILE));
-             PrintWriter writer = new PrintWriter(new File(OUTPUT_FILE))) {
+             PrintWriter writer = new PrintWriter(OUTPUT_FILE)) {
 
-            // Read and copy the exact header row so your parser still works
             if (scanner.hasNextLine()) {
                 String header = scanner.nextLine();
                 writer.println(header);
             }
 
-            // Process each row
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 totalProcessed++;
@@ -37,34 +34,25 @@ public class DatasetGenerator {
                 try {
                     String[] row = CsvParser.parseCSVLine(line);
 
-                    // Skip rows that don't have enough columns
                     if (row.length < 18) continue;
 
                     double propLat = Double.parseDouble(row[16]);
                     double propLon = Double.parseDouble(row[17]);
 
-                    // Check if the building is within MAX_RADIUS_KM of ANY school
-                    boolean isNearSchool = false;
                     for (School school : School.values()) {
                         double distance = calculateDistance(school.getLat(), school.getLon(), propLat, propLon);
                         if (distance <= MAX_RADIUS_KM) {
-                            isNearSchool = true;
-                            break; // It's near at least one school
-                        }
-                    }
-
-                    // Apply the 5% chance if it passed the location check
-                    if (isNearSchool) {
-                        if (random.nextDouble() < CHANCE_TO_BE_LISTED) {
-                            writer.println(line); // Write the original line exactly as it was
-                            totalListed++;
+                            if (random.nextDouble() < CHANCE_TO_BE_LISTED) {
+                                writer.println(line);
+                                totalListed++;
+                            }
                         }
                     }
 
                 } catch (Exception _) {}
             }
 
-            System.out.println("Dataset generation complete!");
+            System.out.println("Dataset generation complete");
             System.out.println("Total records checked: " + totalProcessed);
             System.out.println("Total properties 'listed for sale': " + totalListed);
             System.out.println("Saved to: " + OUTPUT_FILE);

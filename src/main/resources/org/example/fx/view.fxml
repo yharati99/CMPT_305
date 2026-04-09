@@ -3,13 +3,11 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.fx.PropertyController">
     <children>
 
-        <!-- Header -->
         <VBox style="-fx-background-color: #1e3a5f; -fx-padding: 16 20 16 20;">
             <Label text="🏠 Student Property Finder"
                    style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;" />
@@ -17,7 +15,6 @@
                    style="-fx-font-size: 12px; -fx-text-fill: #a8c4e0; -fx-padding: 4 0 0 0;" />
         </VBox>
 
-        <!-- Search Bar -->
         <HBox spacing="12.0" alignment="CENTER_LEFT"
               style="-fx-background-color: #f4f6f9; -fx-padding: 12 16 12 16; -fx-border-color: #d0d7e3; -fx-border-width: 0 0 1 0;">
             <VBox spacing="3">
@@ -28,7 +25,7 @@
                 <Label text="Max Price ($/month)" style="-fx-font-size: 11px; -fx-text-fill: #666;" />
                 <Spinner fx:id="priceSpinner" editable="true" prefWidth="130">
                     <valueFactory>
-                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="500000" max="10000000" min="0" />
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="100" initialValue="1000" max="10000" min="200" />
                     </valueFactory>
                 </Spinner>
             </VBox>
@@ -47,7 +44,6 @@
             </VBox>
         </HBox>
 
-        <!-- Map + List -->
         <HBox spacing="10.0" VBox.vgrow="ALWAYS">
             <padding><Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /></padding>
             <children>

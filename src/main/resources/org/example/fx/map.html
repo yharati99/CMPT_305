@@ -20,7 +20,6 @@
 <div id="map"></div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    // Initialize the map with animations turned off
     const map = L.map('map', {
         zoomAnimation: false,
         fadeAnimation: false,
@@ -31,10 +30,8 @@
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // NEW 1: Create a dictionary to remember all our markers
     var allMarkers = {};
 
-    // Set Map Zoom
     function zoomToLocation(lat, lon) {
         map.setView([lat, lon], 14);
     }
@@ -45,7 +42,6 @@
                 map.removeLayer(layer);
             }
         });
-        // NEW 2: Clear our dictionary when markers are cleared
         allMarkers = {};
     }
 
@@ -54,26 +50,37 @@
             .addTo(map)
             .bindPopup(label);
 
-        // NEW 3: Save the marker using its coordinates as a unique key
         var key = lat + "," + lon;
         allMarkers[key] = marker;
     }
 
-    // NEW 4: Add the highlight function that Java will call
+    var redSchoolIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    function addSchoolMarker(lat, lon, schoolName) {
+        var marker = L.marker([lat, lon], {icon: redSchoolIcon}).addTo(map);
+
+        marker.bindPopup("<b>" + schoolName + "</b>").openPopup();
+
+    }
+
     function highlightMarker(lat, lon) {
         var key = lat + "," + lon;
         var markerToHighlight = allMarkers[key];
 
         if (markerToHighlight) {
-            // Center the map on the marker (zoom level 15 is nice and close)
             map.setView([lat, lon], 15);
 
-            // Pop open the tooltip!
             markerToHighlight.openPopup();
         }
     }
 
-    // Force resize recalculation
     new ResizeObserver(function() {
         map.invalidateSize();
     }).observe(document.getElementById('map'));

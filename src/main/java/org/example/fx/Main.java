@@ -1,6 +1,5 @@
 package org.example.fx;
 
-import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +12,6 @@ public class Main {
 
         School selectedSchool;
 
-        // Using a switch to match the input to the Enum
         switch (schoolInput.toUpperCase()) {
             case "UOFA":
                 selectedSchool = School.UofA;
@@ -33,11 +31,9 @@ public class Main {
         }
 
         System.out.print("Enter search radius in km (e.g., 3.0): ");
-        // It's safer to use double here
         double radius = input.nextDouble();
         input.nextLine();
 
-        // Now call your logic class using the data from the Enum
         SearchByCoordinate searcher = new SearchByCoordinate();
 
         List<PropertyAssessment> results = searcher.findProperties(selectedSchool.getLat(), selectedSchool.getLon(), radius);

@@ -6,12 +6,12 @@ import javafx.scene.control.*;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PropertyController {
 
-    // UI Elements
     @FXML private ComboBox<School> uniComboBox;
     @FXML private Spinner<Integer> priceSpinner;
     @FXML private Spinner<Integer> distSpinner;
@@ -26,7 +26,6 @@ public class PropertyController {
 
     @FXML
     public void initialize() {
-        // 1. Load the Enums into the dropdown
         if (uniComboBox != null) {
             uniComboBox.setItems(FXCollections.observableArrayList(School.values()));
         }
@@ -34,7 +33,6 @@ public class PropertyController {
         if (propertyList != null) {
             propertyList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null && webView != null) {
-                    // Send a command to JavaScript to highlight this specific property
                     webView.getEngine().executeScript(
                             "highlightMarker(" + newValue.getLat() + ", " + newValue.getLon() + ");"
                     );
@@ -46,10 +44,9 @@ public class PropertyController {
             WebEngine engine = webView.getEngine();
             engine.setJavaScriptEnabled(true);
 
-            // Using the path that worked for your setup
             URL url = getClass().getResource("map.html");
             if (url == null) {
-                System.out.println("CRITICAL: map.html not found! Check your folder structure.");
+                System.out.println("ERROR: map.html not found! Check your folder structure.");
             } else {
                 engine.load(url.toExternalForm());
             }
@@ -58,8 +55,6 @@ public class PropertyController {
         if (propertyList != null) {
             propertyList.setCellFactory(listView -> new PropertyCell());
 
-            // This is how you make the cells visually appealing right away,
-            // otherwise JavaFX waits for the list to be populated to style it.
             propertyList.setStyle("-fx-background-color: transparent; -fx-control-inner-background: #f8f9fa; -fx-border-color: #f1f3f4;");
         }
     }
@@ -90,17 +85,18 @@ public class PropertyController {
 
             propertyList.setItems(FXCollections.observableArrayList(filteredResults));
 
-            // Zoom to selected school
             webView.getEngine().executeScript(
                     "zoomToLocation(" + selectedSchool.getLat() + ", " + selectedSchool.getLon() + ");"
             );
 
             WebEngine engine = webView.getEngine();
 
-            // Clear old markers first
             engine.executeScript("clearMarkers();");
 
-            // Add a marker for each result
+            engine.executeScript(
+                    "addSchoolMarker(" + selectedSchool.getLat() + ", " + selectedSchool.getLon() + ", '" + selectedSchool.toString() + "');"
+            );
+
             for (PropertyAssessment p : filteredResults) {
                 engine.executeScript(
                         "addMarker(" + p.getLat() + ", " + p.getLon() + ", '" + p.getNeighbourhood() + "');"
@@ -112,28 +108,22 @@ public class PropertyController {
         }
     }
 
-    //Price sort
     @FXML
     private void handleSort() {
-        // Get current items from the list
         var items = propertyList.getItems();
         if (items == null || items.isEmpty()) return;
 
-        // Toggle direction and update text
         ascending = !ascending;
 
         if (ascending) {
             sortLink.setText("^ $ Sort");
-            items.sort((p1, p2) -> Long.compare(p1.getAssessedValue(), p2.getAssessedValue()));
-            //items.sort((p1, p2) -> Double.compare(p1.getAdjustedValue(), p2.getAdjustedValue()));
+            items.sort(Comparator.comparingLong(PropertyAssessment::getAssessedValue));
         } else {
             sortLink.setText("v $ Sort");
             items.sort((p1, p2) -> Long.compare(p2.getAssessedValue(), p1.getAssessedValue()));
-            //items.sort((p1, p2) -> Double.compare(p2.getAdjustedValue(), p1.getAdjustedValue()));
         }
     }
 
-    //Distance sort
     @FXML
     private void handleDistSort() {
         var items = propertyList.getItems();
