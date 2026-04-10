@@ -59,7 +59,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     }
 
 
-    public void setAdjustedValue(School school) {
+    public void setAdjustedValue() {
         this.adjustedValue = this.assessedValue * 0.005;
     }
 

@@ -31,7 +31,7 @@ public class PropertyController {
         }
 
         if (propertyList != null) {
-            propertyList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            propertyList.getSelectionModel().selectedItemProperty().addListener((_, _, newValue) -> {
                 if (newValue != null && webView != null) {
                     webView.getEngine().executeScript(
                             "highlightMarker(" + newValue.getLat() + ", " + newValue.getLon() + ");"
@@ -53,7 +53,7 @@ public class PropertyController {
         }
 
         if (propertyList != null) {
-            propertyList.setCellFactory(listView -> new PropertyCell());
+            propertyList.setCellFactory(_ -> new PropertyCell());
 
             propertyList.setStyle("-fx-background-color: transparent; -fx-control-inner-background: #f8f9fa; -fx-border-color: #f1f3f4;");
         }
@@ -79,8 +79,9 @@ public class PropertyController {
             );
 
             List<PropertyAssessment> filteredResults = rawResults.stream()
-                    .peek(p -> p.setAdjustedValue(selectedSchool))
+                    .peek(PropertyAssessment::setAdjustedValue)
                     .filter(p -> p.getAdjustedValue() <= maxPrice)
+                    .filter(p -> !p.getAddress().isEmpty())
                     .collect(Collectors.toList());
 
             propertyList.setItems(FXCollections.observableArrayList(filteredResults));
@@ -94,7 +95,7 @@ public class PropertyController {
             engine.executeScript("clearMarkers();");
 
             engine.executeScript(
-                    "addSchoolMarker(" + selectedSchool.getLat() + ", " + selectedSchool.getLon() + ", '" + selectedSchool.toString() + "');"
+                    "addSchoolMarker(" + selectedSchool.getLat() + ", " + selectedSchool.getLon() + ", '" + selectedSchool + "');"
             );
 
             for (PropertyAssessment p : filteredResults) {
