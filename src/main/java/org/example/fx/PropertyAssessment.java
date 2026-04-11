@@ -17,6 +17,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final double lon;
     private double adjustedValue;
 
+    // Property Assessment
     public PropertyAssessment(String[] csvRow) {
         this.accountNumber = Integer.parseInt(csvRow[0]);
         this.address = (csvRow[1] + " " + csvRow[2] + " " + csvRow[3]).trim().replaceAll(" +", " ");
@@ -47,39 +48,47 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
+    // Getter for lat
     public double getLat() {
         return lat;
     }
+
+    // Getter for lon
     public double getLon() {
         return lon;
     }
 
+    // Getter for adjusted value
     public double getAdjustedValue() {
         return adjustedValue;
     }
 
-
+    // Setter for adjusted value
     public void setAdjustedValue() {
         this.adjustedValue = this.assessedValue * 0.005;
     }
 
+    // Getter for assessed value
     public long getAssessedValue() {
         return assessedValue;
     }
 
+    // Getter for Address
     public String getAddress() {
         return address;
     }
 
+    // Getter for assessment class
     public String getAssessmentClass() {
         return assessmentClass;
     }
 
+    // Getter for neighbourhood
     public String getNeighbourhood() {
         return neighbourhood;
     }
 
-
+    // Checks if classes match
     public boolean matchesClass(String searchClass) {
         searchClass = searchClass.toUpperCase();
 
@@ -93,6 +102,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return this.assessmentClass.equals(searchClass);
     }
 
+    // Checks if is residential class
     public boolean isResidential() {
         if (assessmentClass.equals("RESIDENTIAL") || assessmentClass.equals("OTHER RESIDENTIAL")) {
             return true;
@@ -101,6 +111,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return assessmentClass.equals("COMMERCIAL") && (isNum(col13) || isNum(col15));
     }
 
+    // Checks if is commercial class
     private boolean isCommercial() {
         if (assessmentClass.equals("COMMERCIAL")) {
             return true;
@@ -110,6 +121,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
                 && isNum(col14);
     }
 
+    // Converts string to long
     private long parseLongSafe(String value) {
         try {
             return Long.parseLong(value);
@@ -118,6 +130,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
+    // Converts string to double
     private double parseDoubleSafe(String value) {
         try {
             return Double.parseDouble(value);
@@ -126,6 +139,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         }
     }
 
+    // Checks if is a number
     private boolean isNum(String value) {
         if (value == null || value.trim().isEmpty()) {
             return false;
