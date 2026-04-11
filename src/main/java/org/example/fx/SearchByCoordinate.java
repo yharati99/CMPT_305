@@ -7,6 +7,7 @@ import java.util.List;
 
 public class SearchByCoordinate {
 
+    // Calculate distance using coordinates
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Radius of the earth in km
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -18,6 +19,7 @@ public class SearchByCoordinate {
         return R * c;
     }
 
+    // Filter properties
     public List<PropertyAssessment> findProperties(double schoolLat, double schoolLon, double radiusKm) {
         List<PropertyAssessment> results = new ArrayList<>();
         String filePath = "Available_Properties.csv";
@@ -58,6 +60,7 @@ public class SearchByCoordinate {
         return results;
     }
 
+    //Display properties
     public void displayResults(List<PropertyAssessment> properties) {
         if (properties.isEmpty()) {
             System.out.println("No properties found in that radius.");
