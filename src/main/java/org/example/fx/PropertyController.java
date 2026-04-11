@@ -24,6 +24,7 @@ public class PropertyController {
     private boolean ascending = true;
     private final SearchByCoordinate searchEngine = new SearchByCoordinate();
 
+    // Initializes
     @FXML
     public void initialize() {
         if (uniComboBox != null) {
@@ -59,6 +60,7 @@ public class PropertyController {
         }
     }
 
+    // Handles the search
     @FXML
     private void handleSearch() {
         School selectedSchool = uniComboBox.getValue();
@@ -109,6 +111,7 @@ public class PropertyController {
         }
     }
 
+    // Handles sorting by price
     @FXML
     private void handleSort() {
         var items = propertyList.getItems();
@@ -125,6 +128,7 @@ public class PropertyController {
         }
     }
 
+    // Handles sorting by distance
     @FXML
     private void handleDistSort() {
         var items = propertyList.getItems();
@@ -141,6 +145,7 @@ public class PropertyController {
         });
     }
 
+    // Calculates distance using coords
     private double calculateHaversine(double lat1, double lon1, double lat2, double lon2) {
         double R = 6371; // Earth radius in km
         double dLat = Math.toRadians(lat2 - lat1);
