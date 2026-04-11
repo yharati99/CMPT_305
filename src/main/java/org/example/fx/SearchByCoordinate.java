@@ -5,8 +5,11 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
+// Core search engine for the app. Scans the generated dataset and filters properties
+// based on geographical proximity to selected school.
 public class SearchByCoordinate {
 
+    // Haversine formula used to calculate distance.
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Radius of the earth in km
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -18,6 +21,7 @@ public class SearchByCoordinate {
         return R * c;
     }
 
+    // Scans the CSV dataset line-by-line. Keeping the ones that fall within the users requested search radius.
     public List<PropertyAssessment> findProperties(double schoolLat, double schoolLon, double radiusKm) {
         List<PropertyAssessment> results = new ArrayList<>();
         String filePath = "Available_Properties.csv";
@@ -58,15 +62,4 @@ public class SearchByCoordinate {
         return results;
     }
 
-    public void displayResults(List<PropertyAssessment> properties) {
-        if (properties.isEmpty()) {
-            System.out.println("No properties found in that radius.");
-            return;
-        }
-
-        System.out.println("Found " + properties.size() + " properties:");
-        for (PropertyAssessment p : properties) {
-            System.out.println(p.toString());
-        }
-    }
 }

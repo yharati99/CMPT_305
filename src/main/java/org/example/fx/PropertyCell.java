@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+// Defines a visual layout for the single rows inside the list view of the app.
 public class PropertyCell extends ListCell<PropertyAssessment> {
 
     private final Label addressLabel;
@@ -17,6 +18,7 @@ public class PropertyCell extends ListCell<PropertyAssessment> {
     private final Label rentLabel;
     private final HBox layout;
 
+    // Initializes the text labels, applies CSS styling, structures the layout, etc.
     public PropertyCell() {
         addressLabel = new Label();
         addressLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #3c4043;");
@@ -53,6 +55,8 @@ public class PropertyCell extends ListCell<PropertyAssessment> {
         });
     }
 
+    // Automatically called by JavaFX whenever a call needs to be drawn or refreshed.
+    // Puts the specific property's data into the UI labels.
     @Override
     protected void updateItem(PropertyAssessment item, boolean empty) {
         super.updateItem(item, empty);

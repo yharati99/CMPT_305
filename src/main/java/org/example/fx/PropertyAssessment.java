@@ -2,6 +2,8 @@ package org.example.fx;
 
 import java.util.Objects;
 
+// Represents a single property record from dataset.
+// Parses raw CSV text into data fields for use.
 public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final int accountNumber;
     private final String address;
@@ -17,6 +19,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
     private final double lon;
     private double adjustedValue;
 
+    // Takes a raw row from the CSV file and extracts the essential fields.
     public PropertyAssessment(String[] csvRow) {
         this.accountNumber = Integer.parseInt(csvRow[0]);
         this.address = (csvRow[1] + " " + csvRow[2] + " " + csvRow[3]).trim().replaceAll(" +", " ");
@@ -58,7 +61,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment> {
         return adjustedValue;
     }
 
-
+    // Calculates the estimated monthly rent based on 0.5% of value.
     public void setAdjustedValue() {
         this.adjustedValue = this.assessedValue * 0.005;
     }

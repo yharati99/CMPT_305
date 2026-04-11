@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Bridge between JavaFX FXML and the backend data logic.
+// Handles user inputs, trigger coordinate searches, dynamically update list and map.
 public class PropertyController {
 
     @FXML private ComboBox<School> uniComboBox;
@@ -24,6 +26,8 @@ public class PropertyController {
     private boolean ascending = true;
     private final SearchByCoordinate searchEngine = new SearchByCoordinate();
 
+    // Auto called by JFX when the UI first loads, sets up the dropdown options and initializes
+    // the JS map bridge, also attaches listeners for clicking list items.
     @FXML
     public void initialize() {
         if (uniComboBox != null) {
@@ -59,6 +63,8 @@ public class PropertyController {
         }
     }
 
+    // Triggered when the user clicks search. Gathers UI param., queries the dataset,
+    // filters out invalid properties, plots the results on map.
     @FXML
     private void handleSearch() {
         School selectedSchool = uniComboBox.getValue();
@@ -109,6 +115,7 @@ public class PropertyController {
         }
     }
 
+    // Toggles sorting of the displayed property list by rent price.
     @FXML
     private void handleSort() {
         var items = propertyList.getItems();
@@ -125,6 +132,7 @@ public class PropertyController {
         }
     }
 
+    // Toggles sorting of the displayed property list distance to selected school.
     @FXML
     private void handleDistSort() {
         var items = propertyList.getItems();
@@ -141,6 +149,7 @@ public class PropertyController {
         });
     }
 
+    // Haversine formula used to calculate distance.
     private double calculateHaversine(double lat1, double lon1, double lat2, double lon2) {
         double R = 6371; // Earth radius in km
         double dLat = Math.toRadians(lat2 - lat1);

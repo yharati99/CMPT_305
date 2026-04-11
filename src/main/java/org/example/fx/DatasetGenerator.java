@@ -12,6 +12,8 @@ public class DatasetGenerator {
     private static final String INPUT_FILE = "Property_Assessment_Data_2025.csv";
     private static final String OUTPUT_FILE = "Available_Properties.csv";
 
+    // Reads the raw property assessment dataset and generates a smaller CSV containing
+    // a randomized 5% sample of properties located within 10km of campus.
     static void main() {
         Random random = new Random();
         int totalProcessed = 0;
@@ -62,6 +64,7 @@ public class DatasetGenerator {
         }
     }
 
+    // Haversine formula used to calculate distance.
     private static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Radius of the earth in km
         double latDistance = Math.toRadians(lat2 - lat1);
